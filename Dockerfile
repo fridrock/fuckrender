@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . /app
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "/app/build/prac5-0.0.1-SNAPSHOT.jar"]
