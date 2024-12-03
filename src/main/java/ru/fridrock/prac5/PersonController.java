@@ -1,5 +1,7 @@
 package ru.fridrock.prac5;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +21,30 @@ public class PersonController {
   }
 
   @GetMapping
+  @Operation(summary = "Get all persons")
   public List<Person> getAllPersons() {
     return personRepository.findAll();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Person> getPersonById(@PathVariable Long id) {
+  @Operation(summary = "Get person by id")
+  public ResponseEntity<Person> getPersonById(@Parameter(description = "Person id", required = true) @PathVariable Long id) {
     Optional<Person> person = personRepository.findById(id);
     return person.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PostMapping
-  public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+  @Operation(summary = "Create person")
+  public ResponseEntity<Person> createPerson(@Parameter(description="Person details", required= true)@RequestBody Person person) {
     Person savedPerson = personRepository.save(person);
     return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
+  @Operation(summary = "Update person")
+  public ResponseEntity<Person> updatePerson(
+      @Parameter(description="Person id", required = true) @PathVariable Long id,
+      @Parameter(description="Person details", required = true) @RequestBody Person personDetails) {
     return personRepository.findById(id).map(person -> {
       person.setFirstName(personDetails.getFirstName());
       person.setLastName(personDetails.getLastName());
@@ -47,7 +55,9 @@ public class PersonController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
+  @Operation(summary = "Delete person")
+  public ResponseEntity<Void> deletePerson(
+      @Parameter(description = "Person id", required = true) @PathVariable Long id) {
     return personRepository.findById(id).map(person -> {
       personRepository.delete(person);
       return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

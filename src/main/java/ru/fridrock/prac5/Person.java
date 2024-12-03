@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -31,7 +30,7 @@ public class Person {
   @Column(name = "birth_year", nullable = false)
   private Integer birthYear;
 
-  protected Person() {
+  public Person() {
   }
 
 }
