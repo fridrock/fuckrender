@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/persons")
-@Slf4j
 public class PersonController {
 
   private ArrayList<Person> persons = new ArrayList<>();
@@ -47,10 +46,7 @@ public class PersonController {
   @PostMapping
   @Operation(summary = "Create person")
   public ResponseEntity<Person> createPerson(
-      @Parameter(description = "Person details", required = true) @RequestBody CreatePersonDto dto) {
-    log.info("POHUY");
-    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    log.info(dto.toString());
+      @Parameter(description = "Person details", required = true) @RequestBody Person dto) {
     Person person = new Person();
     person.setBirthYear(dto.getBirthYear());
     person.setFirstName(dto.getFirstName());
@@ -58,7 +54,6 @@ public class PersonController {
     Long id = persons.size() == 0 ? 0 : persons.get(persons.size() - 1).getId() + 1;
     person.setId(id);
     persons.add(person);
-    log.info(person.toString());
     return new ResponseEntity<>(person, HttpStatus.CREATED);
   }
 
