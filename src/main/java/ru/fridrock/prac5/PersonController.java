@@ -22,7 +22,6 @@ import java.util.List;
 @Slf4j
 public class PersonController {
 
-  //  private final PersonRepository personRepository;
   private ArrayList<Person> persons = new ArrayList<>();
 
 
