@@ -2,6 +2,7 @@ package ru.fridrock.prac5;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/persons")
+@Slf4j
 public class PersonController {
 
   private final PersonRepository personRepository;
@@ -35,8 +37,15 @@ public class PersonController {
 
   @PostMapping
   @Operation(summary = "Create person")
-  public ResponseEntity<Person> createPerson(@Parameter(description="Person details", required= true)@RequestBody Person person) {
+  public ResponseEntity<Person> createPerson(
+      @Parameter(description="Person details", required= true) @RequestBody CreatePersonDto dto) {
+    log.info(dto.toString());
+    Person person = new Person();
+    person.setBirthYear(dto.getBirthYear());
+    person.setFirstName(dto.getFirstName());
+    person.setLastName(dto.getLastName());
     Person savedPerson = personRepository.save(person);
+    log.info(person.toString());
     return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
   }
 
