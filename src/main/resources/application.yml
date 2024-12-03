@@ -8,6 +8,12 @@ spring:
       username: root
       password: e5HqJ2z4BRvN0usID54wiM4T4bJJ8xg0
 
+#    driver-class-name: org.postgresql.Driver
+#    url: "jdbc:postgresql://localhost:5432/postgres"
+#    hikari:
+#      username: root
+#      password: root
+
   jpa:
     hibernate:
       ddl-auto: create-drop

@@ -6,12 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @Table(name = "persons")
 public class Person {
 
@@ -29,12 +32,6 @@ public class Person {
   private Integer birthYear;
 
   protected Person() {
-  }
-
-  public Person(String firstName, String lastName, Integer birthYear) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.birthYear = birthYear;
   }
 
 }
