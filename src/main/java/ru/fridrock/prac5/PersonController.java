@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,24 +17,27 @@ import java.util.Optional;
 @Slf4j
 public class PersonController {
 
-  private final PersonRepository personRepository;
+//  private final PersonRepository personRepository;
+  private ArrayList<Person> persons = new ArrayList<>();
 
-  @Autowired
-  public PersonController(PersonRepository personRepository) {
-    this.personRepository = personRepository;
-  }
 
   @GetMapping
   @Operation(summary = "Get all persons")
   public List<Person> getAllPersons() {
-    return personRepository.findAll();
+    return persons;
   }
 
   @GetMapping("/{id}")
   @Operation(summary = "Get person by id")
   public ResponseEntity<Person> getPersonById(@Parameter(description = "Person id", required = true) @PathVariable Long id) {
-    Optional<Person> person = personRepository.findById(id);
-    return person.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    Person personFound = null;
+    for(Person p: persons){
+      if(p.getId() == id){
+        personFound = p;
+        break;
+      }
+    }
+    return ResponseEntity.ok(personFound);
   }
 
   @PostMapping
@@ -46,9 +51,10 @@ public class PersonController {
     person.setBirthYear(dto.getBirthYear());
     person.setFirstName(dto.getFirstName());
     person.setLastName(dto.getLastName());
-    Person savedPerson = personRepository.save(person);
+    person.setId(persons.get(persons.size()-1).getId()+1);
+    persons.add(person);
     log.info(person.toString());
-    return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
+    return new ResponseEntity<>(person, HttpStatus.CREATED);
   }
 
   @PatchMapping("/{id}")
@@ -56,23 +62,39 @@ public class PersonController {
   public ResponseEntity<Person> updatePerson(
       @Parameter(description="Person id", required = true) @PathVariable Long id,
       @Parameter(description="Person details", required = true) @RequestBody Person personDetails) {
-    return personRepository.findById(id).map(person -> {
-      person.setFirstName(personDetails.getFirstName());
-      person.setLastName(personDetails.getLastName());
-      person.setBirthYear(personDetails.getBirthYear());
-      Person updatedPerson = personRepository.save(person);
-      return ResponseEntity.ok(updatedPerson);
-    }).orElseGet(() -> ResponseEntity.notFound().build());
+    Person foundPerson = null;
+    for(Person p: persons){
+      if(p.getId() == id){
+        p.setLastName(personDetails.getLastName());
+        p.setFirstName(personDetails.getFirstName());
+        p.setBirthYear(personDetails.getBirthYear());
+        foundPerson = p;
+        break;
+      }
+    }
+
+    return ResponseEntity.ok(foundPerson);
   }
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Delete person")
   public ResponseEntity<Void> deletePerson(
       @Parameter(description = "Person id", required = true) @PathVariable Long id) {
-    return personRepository.findById(id).map(person -> {
-      personRepository.delete(person);
-      return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-    }).orElseGet(() -> ResponseEntity.notFound().build());
+    Person foundPerson = null;
+    for(Person p : persons){
+      if(p.getId() == id){
+        foundPerson = p;
+        break;
+      }
+    }
+    persons.remove(foundPerson);
+
+    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//
+//    return personRepository.findById(id).map(person -> {
+//      personRepository.delete(person);
+//      return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//    }).orElseGet(() -> ResponseEntity.notFound().build());
   }
 }
 

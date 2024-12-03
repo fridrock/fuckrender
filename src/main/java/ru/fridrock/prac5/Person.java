@@ -8,31 +8,32 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@Entity
+//@Entity
 @AllArgsConstructor
-@Table(name = "persons")
-@ToString
+@NoArgsConstructor
+//@Table(name = "persons")
+//@ToString
 public class Person {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+//  @Id
+//  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "first_name", nullable = false)
+//  @Column(name = "first_name", nullable = false)
   private String firstName;
 
-  @Column(name = "last_name", nullable = false)
+//  @Column(name = "last_name", nullable = false)
   private String lastName;
 
-  @Column(name = "birth_year", nullable = false)
+//  @Column(name = "birth_year", nullable = false)
   private Integer birthYear;
 
-  public Person() {
-  }
+
 
 }
