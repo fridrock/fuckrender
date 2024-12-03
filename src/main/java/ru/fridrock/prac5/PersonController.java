@@ -40,6 +40,7 @@ public class PersonController {
   public ResponseEntity<Person> createPerson(
       @Parameter(description="Person details", required= true) @RequestBody CreatePersonDto dto) {
     log.info("POHUY");
+    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     log.info(dto.toString());
     Person person = new Person();
     person.setBirthYear(dto.getBirthYear());
