@@ -3,21 +3,26 @@ package ru.fridrock.prac5;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/persons/")
+@RequestMapping("/api/persons")
 @Slf4j
 public class PersonController {
 
-//  private final PersonRepository personRepository;
+  //  private final PersonRepository personRepository;
   private ArrayList<Person> persons = new ArrayList<>();
 
 
@@ -31,8 +36,8 @@ public class PersonController {
   @Operation(summary = "Get person by id")
   public ResponseEntity<Person> getPersonById(@Parameter(description = "Person id", required = true) @PathVariable Long id) {
     Person personFound = null;
-    for(Person p: persons){
-      if(p.getId() == id){
+    for (Person p : persons) {
+      if (p.getId() == id) {
         personFound = p;
         break;
       }
@@ -43,7 +48,7 @@ public class PersonController {
   @PostMapping
   @Operation(summary = "Create person")
   public ResponseEntity<Person> createPerson(
-      @Parameter(description="Person details", required= true) @RequestBody CreatePersonDto dto) {
+      @Parameter(description = "Person details", required = true) @RequestBody CreatePersonDto dto) {
     log.info("POHUY");
     System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     log.info(dto.toString());
@@ -51,7 +56,7 @@ public class PersonController {
     person.setBirthYear(dto.getBirthYear());
     person.setFirstName(dto.getFirstName());
     person.setLastName(dto.getLastName());
-    Long id = persons.size()==0?0:persons.get(persons.size()-1).getId()+1;
+    Long id = persons.size() == 0 ? 0 : persons.get(persons.size() - 1).getId() + 1;
     person.setId(id);
     persons.add(person);
     log.info(person.toString());
@@ -61,11 +66,11 @@ public class PersonController {
   @PatchMapping("/{id}")
   @Operation(summary = "Update person")
   public ResponseEntity<Person> updatePerson(
-      @Parameter(description="Person id", required = true) @PathVariable Long id,
-      @Parameter(description="Person details", required = true) @RequestBody Person personDetails) {
+      @Parameter(description = "Person id", required = true) @PathVariable Long id,
+      @Parameter(description = "Person details", required = true) @RequestBody Person personDetails) {
     Person foundPerson = null;
-    for(Person p: persons){
-      if(p.getId() == id){
+    for (Person p : persons) {
+      if (p.getId() == id) {
         p.setLastName(personDetails.getLastName());
         p.setFirstName(personDetails.getFirstName());
         p.setBirthYear(personDetails.getBirthYear());
@@ -82,8 +87,8 @@ public class PersonController {
   public ResponseEntity<Void> deletePerson(
       @Parameter(description = "Person id", required = true) @PathVariable Long id) {
     Person foundPerson = null;
-    for(Person p : persons){
-      if(p.getId() == id){
+    for (Person p : persons) {
+      if (p.getId() == id) {
         foundPerson = p;
         break;
       }
