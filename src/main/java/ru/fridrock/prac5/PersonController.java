@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/persons")
+@RequestMapping("/api/persons/")
 @Slf4j
 public class PersonController {
 
@@ -39,6 +39,7 @@ public class PersonController {
   @Operation(summary = "Create person")
   public ResponseEntity<Person> createPerson(
       @Parameter(description="Person details", required= true) @RequestBody CreatePersonDto dto) {
+    log.info("POHUY");
     log.info(dto.toString());
     Person person = new Person();
     person.setBirthYear(dto.getBirthYear());
