@@ -51,7 +51,8 @@ public class PersonController {
     person.setBirthYear(dto.getBirthYear());
     person.setFirstName(dto.getFirstName());
     person.setLastName(dto.getLastName());
-    person.setId(persons.get(persons.size()-1).getId()+1);
+    Long id = persons.size()==0?0:persons.get(persons.size()-1).getId()+1;
+    person.setId(id);
     persons.add(person);
     log.info(person.toString());
     return new ResponseEntity<>(person, HttpStatus.CREATED);
